@@ -2,6 +2,7 @@
 #include <initializer_list>
 #include <ios>
 #include <iostream>
+#include <stdexcept>
 #include <utility>
 
 #include "Polynomial.h"
@@ -26,11 +27,14 @@ Polynomial::Polynomial(initializer_list<pair<coefficient_type, exponent_type>> i
 {
     for (auto const& p : il)
     {
-        if (p.first != coefficient_type())
+        if (m_polynomial.count(p.second) == 1)
         {
-            m_polynomial[p.second] = p.first;
+            throw std::domain_error("Term exists in Polynomial");
         }
+        m_polynomial[p.second] = p.first;
     }
+
+    clear_zeroes();
 }
 
 Polynomial::~Polynomial()
@@ -48,6 +52,7 @@ Polynomial& Polynomial::operator+=(Polynomial const& other)
     {
         m_polynomial[ecp.first] += ecp.second;
     }
+    clear_zeroes();
 
     // for_each(other.m_polynomial.cbegin(), other.m_polynomial.cend(),
     //          [m_polynomial](pair<const exponent_type, coefficient_type> ecp)

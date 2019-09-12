@@ -1,4 +1,5 @@
 #include <sstream>
+#include <cstring>
 #include "Polynomial.h"
 #include "catch.hpp"
 
@@ -176,7 +177,7 @@ TEST_CASE("Polynomial") {
 #endif
 		}
 		catch (const exception& e) {
-			REQUIRE(e.what() == "Term exists in Polynomial");
+			REQUIRE(strcmp(e.what(), "Term exists in Polynomial") == 0);
 		}
 	}
 }
